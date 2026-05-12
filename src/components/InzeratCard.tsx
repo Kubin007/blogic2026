@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Text, Badge, Button, Group } from "@mantine/core";
+import { Badge, Button, Card, Group, Text } from "@mantine/core";
 import Link from "next/link";
 
 type Inzerat = {

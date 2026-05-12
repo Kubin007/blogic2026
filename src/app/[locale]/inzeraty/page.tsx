@@ -1,5 +1,5 @@
-import { getTranslations } from "next-intl/server";
 import { SimpleGrid, Title } from "@mantine/core";
+import { getTranslations } from "next-intl/server";
 import { InzeratCard } from "@/components/InzeratCard";
 
 const INZERATY = [
@@ -9,7 +9,7 @@ const INZERATY = [
 ];
 
 export default async function InzeratyPage() {
-  const t = await getTranslations();
+  const _t = await getTranslations();
   return (
     <>
       <Title>Přehled inzerátů</Title>

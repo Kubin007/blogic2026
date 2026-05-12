@@ -1,6 +1,6 @@
 "use client";
 
-import { TextInput, Textarea, Select, Button, Stack, Title, Checkbox, NumberInput, Card } from "@mantine/core";
+import { Button, Card, Checkbox, NumberInput, Select, Stack, Textarea, TextInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
 export default function NovyInzeratPage() {
@@ -15,11 +15,11 @@ export default function NovyInzeratPage() {
       zdarma: false,
     },
     validate: {
-      nazev: (value) => value.trim().length === 0 ? "Název je povinný" : null,
-      popis: (value) => value.trim().length === 0 ? "Popis je povinný" : null,
-      kategorie: (value) => value.trim().length === 0 ? "Kategorie je povinná" : null,
-      kontakt: (value) => value.trim().length === 0 ? "Kontakt je povinný" : null,
-      cena: (value, values) => !values.zdarma && value <= 0 ? "Zadej cenu nebo označ jako Zdarma" : null,
+      nazev: (value) => (value.trim().length === 0 ? "Název je povinný" : null),
+      popis: (value) => (value.trim().length === 0 ? "Popis je povinný" : null),
+      kategorie: (value) => (value.trim().length === 0 ? "Kategorie je povinná" : null),
+      kontakt: (value) => (value.trim().length === 0 ? "Kontakt je povinný" : null),
+      cena: (value, values) => (!values.zdarma && value <= 0 ? "Zadej cenu nebo označ jako Zdarma" : null),
     },
   });
 
@@ -28,17 +28,8 @@ export default function NovyInzeratPage() {
       <Title mt="md">Nový inzerát</Title>
       <Card withBorder radius="md" p="xl" mt="md" maw={600}>
         <Stack>
-          <TextInput
-            label="Název"
-            placeholder="Co nabízíš?"
-            {...form.getInputProps("nazev")}
-          />
-          <Textarea
-            label="Popis"
-            placeholder="Popiš stav věci..."
-            minRows={3}
-            {...form.getInputProps("popis")}
-          />
+          <TextInput label="Název" placeholder="Co nabízíš?" {...form.getInputProps("nazev")} />
+          <Textarea label="Popis" placeholder="Popiš stav věci..." minRows={3} {...form.getInputProps("popis")} />
           <Select
             label="Kategorie"
             placeholder="Vyber kategorii"
@@ -50,23 +41,11 @@ export default function NovyInzeratPage() {
             data={["Dostupné", "Rezervováno", "Prodáno / předáno"]}
             {...form.getInputProps("stav")}
           />
-          <Checkbox
-            label="Zdarma"
-            {...form.getInputProps("zdarma", { type: "checkbox" })}
-          />
+          <Checkbox label="Zdarma" {...form.getInputProps("zdarma", { type: "checkbox" })} />
           {!form.values.zdarma && (
-            <NumberInput
-              label="Cena (Kč)"
-              placeholder="0"
-              min={0}
-              {...form.getInputProps("cena")}
-            />
+            <NumberInput label="Cena (Kč)" placeholder="0" min={0} {...form.getInputProps("cena")} />
           )}
-          <TextInput
-            label="Kontakt"
-            placeholder="Tvůj e-mail nebo telefon"
-            {...form.getInputProps("kontakt")}
-          />
+          <TextInput label="Kontakt" placeholder="Tvůj e-mail nebo telefon" {...form.getInputProps("kontakt")} />
           <Button
             color="orange"
             onClick={() => {

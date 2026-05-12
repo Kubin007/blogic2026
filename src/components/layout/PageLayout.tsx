@@ -1,9 +1,9 @@
 "use client";
 
-import { AppShell, Container, Group, Button, Text } from "@mantine/core";
+import { AppShell, Button, Container, Group } from "@mantine/core";
+import Link from "next/link";
 import type { PropsWithChildren } from "react";
 import { PageLogo } from "@/components/layout/PageLogo";
-import Link from "next/link";
 
 const HEADER_HEIGHT = 70;
 const BODY_MAX_WIDTH = 1280;
@@ -19,7 +19,9 @@ export function PageLayout({ children }: PropsWithChildren) {
             </Link>
             <Group gap="xs">
               <Link href="/cs/inzeraty">
-                <Button variant="subtle" color="gray">Inzeráty</Button>
+                <Button variant="subtle" color="gray">
+                  Inzeráty
+                </Button>
               </Link>
               <Link href="/cs/inzeraty/novy">
                 <Button color="orange">+ Přidat inzerát</Button>

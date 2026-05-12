@@ -1,4 +1,4 @@
-import { Title, Text, Badge, Button } from "@mantine/core";
+import { Badge, Button, Text, Title } from "@mantine/core";
 import Link from "next/link";
 
 const INZERATY = [
@@ -7,11 +7,7 @@ const INZERATY = [
   { id: 3, nazev: "Knihy", cena: 50, kategorie: "Knihy", popis: "Mix různých žánrů." },
 ];
 
-export default async function DetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function DetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const inzerat = INZERATY.find((i) => i.id === Number(id));
 
@@ -20,13 +16,15 @@ export default async function DetailPage({
   return (
     <>
       <Title>{inzerat.nazev}</Title>
-      <Badge mt="sm">{inzerat.kategorie}</Badge>
+      <Badge mt="sm" color="orange">
+        {inzerat.kategorie}
+      </Badge>
       <Text mt="md">{inzerat.popis}</Text>
       <Text mt="sm" fw={500}>
         {inzerat.cena === 0 ? "Zdarma" : `${inzerat.cena} Kč`}
       </Text>
       <Link href="/cs/inzeraty">
-        <Button mt="lg">
+        <Button mt="lg" color="orange">
           Zpět na přehled
         </Button>
       </Link>
