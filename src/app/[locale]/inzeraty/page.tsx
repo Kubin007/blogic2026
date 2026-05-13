@@ -1,21 +1,19 @@
 import { SimpleGrid, Title } from "@mantine/core";
-import { getTranslations } from "next-intl/server";
+import { db } from "@/db";
+import { inzerat } from "@/db/schemas/inzerat.schema";
 import { InzeratCard } from "@/components/InzeratCard";
 
-const INZERATY = [
-  { id: 1, nazev: "Stará pohovka", cena: 500, kategorie: "Nábytek" },
-  { id: 2, nazev: "Dětský kočárek", cena: 0, kategorie: "Dětské věci" },
-  { id: 3, nazev: "Knihy", cena: 50, kategorie: "Knihy" },
-];
+export const dynamic = "force-dynamic";
 
 export default async function InzeratyPage() {
-  const _t = await getTranslations();
+  const inzeraty = await db.select().from(inzerat);
+
   return (
     <>
-      <Title>Přehled inzerátů</Title>
+      <Title mt="md">Přehled inzerátů</Title>
       <SimpleGrid cols={3} mt="md">
-        {INZERATY.map((inzerat) => (
-          <InzeratCard key={inzerat.id} inzerat={inzerat} />
+        {inzeraty.map((i) => (
+          <InzeratCard key={i.id} inzerat={i} />
         ))}
       </SimpleGrid>
     </>

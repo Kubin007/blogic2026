@@ -15,6 +15,20 @@
       "when": 1778172390529,
       "tag": "0001_seed-is-maintenance-system-setting",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1778587881336,
+      "tag": "0002_kind_revanche",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1778656165281,
+      "tag": "0003_mysterious_dragon_man",
+      "breakpoints": true
     }
   ]
 }

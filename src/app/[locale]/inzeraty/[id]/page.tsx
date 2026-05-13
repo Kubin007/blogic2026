@@ -1,33 +1,48 @@
-import { Badge, Button, Text, Title } from "@mantine/core";
+import { Title, Text, Badge, Button, Group, Card, Divider, Image } from "@mantine/core";
+import { db } from "@/db";
+import { inzerat } from "@/db/schemas/inzerat.schema";
+import { eq } from "drizzle-orm";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
-const INZERATY = [
-  { id: 1, nazev: "Stará pohovka", cena: 500, kategorie: "Nábytek", popis: "Dobrý stav, jen trochu ošoupaná." },
-  { id: 2, nazev: "Dětský kočárek", cena: 0, kategorie: "Dětské věci", popis: "Funkční, darujeme zdarma." },
-  { id: 3, nazev: "Knihy", cena: 50, kategorie: "Knihy", popis: "Mix různých žánrů." },
-];
+export const dynamic = "force-dynamic";
 
-export default async function DetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function DetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
-  const inzerat = INZERATY.find((i) => i.id === Number(id));
+  const [item] = await db.select().from(inzerat).where(eq(inzerat.id, Number(id)));
 
-  if (!inzerat) return <Text>Inzerát nenalezen.</Text>;
+  if (!item) return notFound();
 
   return (
     <>
-      <Title>{inzerat.nazev}</Title>
-      <Badge mt="sm" color="orange">
-        {inzerat.kategorie}
-      </Badge>
-      <Text mt="md">{inzerat.popis}</Text>
-      <Text mt="sm" fw={500}>
-        {inzerat.cena === 0 ? "Zdarma" : `${inzerat.cena} Kč`}
-      </Text>
       <Link href="/cs/inzeraty">
-        <Button mt="lg" color="orange">
-          Zpět na přehled
+        <Button variant="subtle" color="orange" mt="md">
+          ← Zpět na přehled
         </Button>
       </Link>
+      <Card withBorder radius="md" p="xl" mt="md" maw={700}>
+        {item.obrazek && (
+          <Image src={item.obrazek} radius="md" mb="md" mah={400} fit="contain" />
+        )}
+        <Group justify="space-between" mb="xs">
+          <Title order={2}>{item.nazev}</Title>
+          <Badge color="orange" size="lg">{item.kategorie}</Badge>
+        </Group>
+        <Badge color={item.stav === "Dostupné" ? "green" : item.stav === "Rezervováno" ? "yellow" : "gray"} mb="md">
+          {item.stav}
+        </Badge>
+        <Divider mb="md" />
+        <Text mb="md">{item.popis}</Text>
+        <Divider mb="md" />
+        <Text fw={600} size="lg" mb="xs">
+          {item.zdarma ? "Zdarma" : `${item.cena} Kč`}
+        </Text>
+        <Text size="sm" c="dimmed">Kontakt: {item.kontakt}</Text>
+      </Card>
     </>
   );
 }
