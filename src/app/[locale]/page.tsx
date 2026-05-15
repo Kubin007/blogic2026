@@ -1,8 +1,8 @@
-import { Title, Text, Button, Stack, Group, SimpleGrid, Card, Badge } from "@mantine/core";
+import { Badge, Button, Card, Group, SimpleGrid, Stack, Text, Title } from "@mantine/core";
+import { Baby, BookOpen, Handshake, Package, Search, Shirt, ShoppingBag, Smartphone, Sofa } from "lucide-react";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
 import Link from "next/link";
-import { ShoppingBag, Search, Handshake, Sofa, Baby, Shirt, Smartphone, BookOpen, Package } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations();
@@ -50,27 +50,35 @@ export default async function Page(_: PageProps<"/[locale]">) {
 
       <Stack align="center" mt={60} mb={16}>
         <Title order={2}>Jak to funguje?</Title>
-        <Text c="dimmed" ta="center">Jednoduché a rychlé sdílení věcí mezi kolegy</Text>
+        <Text c="dimmed" ta="center">
+          Jednoduché a rychlé sdílení věcí mezi kolegy
+        </Text>
       </Stack>
 
       <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg" mb={60}>
         <Card withBorder radius="md" p="xl">
           <ShoppingBag size={32} color="#e8590c" />
-          <Text fw={600} size="lg" mt="sm">Vytvoř inzerát</Text>
+          <Text fw={600} size="lg" mt="sm">
+            Vytvoř inzerát
+          </Text>
           <Text size="sm" c="dimmed" mt="xs">
             Vyplň název, popis, kategorii a cenu. Zabere to jen minutu.
           </Text>
         </Card>
         <Card withBorder radius="md" p="xl">
           <Search size={32} color="#e8590c" />
-          <Text fw={600} size="lg" mt="sm">Prohlédni nabídky</Text>
+          <Text fw={600} size="lg" mt="sm">
+            Prohlédni nabídky
+          </Text>
           <Text size="sm" c="dimmed" mt="xs">
             Procházej inzeráty od kolegů a najdi co potřebuješ.
           </Text>
         </Card>
         <Card withBorder radius="md" p="xl">
           <Handshake size={32} color="#e8590c" />
-          <Text fw={600} size="lg" mt="sm">Domluv předání</Text>
+          <Text fw={600} size="lg" mt="sm">
+            Domluv předání
+          </Text>
           <Text size="sm" c="dimmed" mt="xs">
             Kontaktuj prodávajícího a domluvte se na předání přímo v kanceláři.
           </Text>
@@ -93,7 +101,9 @@ export default async function Page(_: PageProps<"/[locale]">) {
         ].map((kat) => (
           <Card key={kat.label} withBorder radius="md" p="md" style={{ textAlign: "center" }}>
             <Group justify="center">{kat.icon}</Group>
-            <Text size="sm" fw={500} mt="xs">{kat.label}</Text>
+            <Text size="sm" fw={500} mt="xs">
+              {kat.label}
+            </Text>
           </Card>
         ))}
       </SimpleGrid>

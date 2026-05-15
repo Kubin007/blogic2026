@@ -1,8 +1,8 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { db } from "@/db";
 import { inzerat } from "@/db/schemas/inzerat.schema";
-import { redirect } from "next/navigation";
 
 export async function vytvorInzerat(data: {
   nazev: string;

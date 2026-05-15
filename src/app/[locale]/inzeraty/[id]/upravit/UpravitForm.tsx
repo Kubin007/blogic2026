@@ -4,7 +4,8 @@ import {
   Button,
   Card,
   Checkbox,
-  Image,
+  Group,
+  Modal,
   NumberInput,
   Select,
   Stack,
@@ -14,23 +15,39 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useRef, useState } from "react";
-import { vytvorInzerat } from "./action";
+import { useState } from "react";
+import Link from "next/link";
 import { ImageCropper } from "@/components/ImageCropper";
+import { smazatInzerat, upravitInzerat } from "./action";
 
-export default function NovyInzeratPage() {
-  const [obrazekUrl, setObrazekUrl] = useState<string | null>(null);
+type Props = {
+  inzerat: {
+    id: number;
+    nazev: string;
+    popis: string;
+    cena: number;
+    zdarma: boolean;
+    kategorie: string;
+    stav: string;
+    kontakt: string;
+    obrazek: string | null;
+  };
+};
+
+export function UpravitForm({ inzerat }: Props) {
+  const [obrazekUrl, setObrazekUrl] = useState<string | null>(inzerat.obrazek);
+  const [smazatOpened, setSmazatOpened] = useState(false);
 
   const form = useForm({
     initialValues: {
-      nazev: "",
-      popis: "",
-      cena: 0,
-      kategorie: "",
-      stav: "Dostupné",
-      kontakt: "",
-      zdarma: false,
-      obrazek: "",
+      nazev: inzerat.nazev,
+      popis: inzerat.popis,
+      cena: inzerat.cena,
+      kategorie: inzerat.kategorie,
+      stav: inzerat.stav,
+      kontakt: inzerat.kontakt,
+      zdarma: inzerat.zdarma,
+      obrazek: inzerat.obrazek ?? "",
     },
     validate: {
       nazev: (value) => (value.trim().length === 0 ? "Název je povinný" : null),
@@ -43,7 +60,33 @@ export default function NovyInzeratPage() {
 
   return (
     <>
-      <Title mt="md">Nový inzerát</Title>
+      <Modal
+        opened={smazatOpened}
+        onClose={() => setSmazatOpened(false)}
+        title="Smazat inzerát"
+        centered
+      >
+        <Text>Opravdu chceš smazat inzerát <b>{inzerat.nazev}</b>? Tato akce je nevratná.</Text>
+        <Group mt="md" justify="flex-end">
+          <Button variant="subtle" onClick={() => setSmazatOpened(false)}>Zrušit</Button>
+          <Button color="red" onClick={async () => await smazatInzerat(inzerat.id)}>
+            Smazat
+          </Button>
+        </Group>
+      </Modal>
+
+      <Group mt="md">
+        <Link href={`/cs/inzeraty/${inzerat.id}`}>
+          <Button variant="subtle" color="orange">
+            ← Zpět na detail
+          </Button>
+        </Link>
+        <Button color="red" variant="outline" onClick={() => setSmazatOpened(true)}>
+          Smazat inzerát
+        </Button>
+      </Group>
+
+      <Title mt="md">Upravit inzerát</Title>
       <Card withBorder radius="md" p="xl" mt="md" maw={600}>
         <Stack>
           <TextInput label="Název" placeholder="Co nabízíš?" {...form.getInputProps("nazev")} />
@@ -69,25 +112,23 @@ export default function NovyInzeratPage() {
               Obrázek
             </Text>
             <ImageCropper
+              existingImage={obrazekUrl}
               onCropDone={(base64) => {
                 setObrazekUrl(base64);
                 form.setFieldValue("obrazek", base64);
               }}
             />
-            {obrazekUrl && (
-              <Image src={obrazekUrl} alt="Náhled" radius="md" mt="xs" mah={200} fit="contain" />
-            )}
           </Stack>
           <Button
             color="orange"
             onClick={async () => {
               const result = form.validate();
               if (!result.hasErrors) {
-                await vytvorInzerat(form.values);
+                await upravitInzerat(inzerat.id, form.values);
               }
             }}
           >
-            Přidat inzerát
+            Uložit změny
           </Button>
         </Stack>
       </Card>

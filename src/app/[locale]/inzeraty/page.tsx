@@ -1,7 +1,7 @@
 import { SimpleGrid, Title } from "@mantine/core";
+import { InzeratCard } from "@/components/InzeratCard";
 import { db } from "@/db";
 import { inzerat } from "@/db/schemas/inzerat.schema";
-import { InzeratCard } from "@/components/InzeratCard";
 
 export const dynamic = "force-dynamic";
 
