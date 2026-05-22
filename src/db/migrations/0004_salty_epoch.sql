@@ -1,0 +1,1 @@
+ALTER TABLE `inzerat` ADD `obrazekPozice` text DEFAULT '50% 50%';

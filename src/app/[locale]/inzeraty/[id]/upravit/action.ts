@@ -16,11 +16,12 @@ export async function upravitInzerat(
     stav: string;
     kontakt: string;
     obrazek: string;
+    obrazekPozice: string;
   },
 ) {
   await db
     .update(inzerat)
-    .set({ ...data, obrazek: data.obrazek || null })
+    .set({ ...data, obrazek: data.obrazek || null, obrazekPozice: data.obrazekPozice || "50% 50%" })
     .where(eq(inzerat.id, id));
   redirect(`/cs/inzeraty/${id}`);
 }

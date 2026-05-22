@@ -25,9 +25,7 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
           </Button>
         </Link>
         <Link href={`/cs/inzeraty/${item.id}/upravit`}>
-          <Button color="orange">
-            Upravit inzerát
-          </Button>
+          <Button color="orange">Upravit inzerát</Button>
         </Link>
       </Group>
       <Card withBorder radius="md" p="xl" w="100%" maw={700}>
@@ -42,7 +40,9 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
           {item.stav}
         </Badge>
         <Divider mb="md" />
-        <Text mb="md">{item.popis}</Text>
+        <Text size="sm" mb="md" style={{ whiteSpace: "pre-wrap" }}>
+          {item.popis}
+        </Text>
         <Divider mb="md" />
         <Text fw={600} size="lg" mb="xs">
           {item.zdarma ? "Zdarma" : `${item.cena} Kč`}

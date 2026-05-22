@@ -1,25 +1,27 @@
 "use client";
 
 import { Badge, Button, Card, Group, Image, Text } from "@mantine/core";
-import type { Inzerat } from "@/db/schemas/inzerat.schema";
 import Link from "next/link";
+import type { Inzerat } from "@/db/schemas/inzerat.schema";
 
 export function InzeratCard({ inzerat }: { inzerat: Inzerat }) {
   const stavBarva = inzerat.stav === "Dostupné" ? "green" : inzerat.stav === "Rezervováno" ? "yellow" : "gray";
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder style={{ display: "flex", flexDirection: "column" }}>
-      <Card.Section style={{ position: "relative", height: 180, overflow: "hidden", background: "#f8f9fa" }}>
+      <Card.Section style={{ position: "relative", height: 180, overflow: "hidden", background: "#f1f3f5" }}>
         <Image
           src={inzerat.obrazek ?? undefined}
-          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: inzerat.obrazekPozice ?? "50% 50%",
+          }}
           alt={inzerat.nazev}
           fallbackSrc="https://placehold.co/400x180/f1f3f5/868e96?text=Bez+obrázku"
         />
-        <Badge
-          color={stavBarva}
-          style={{ position: "absolute", top: 8, left: 8 }}
-        >
+        <Badge color={stavBarva} style={{ position: "absolute", top: 8, left: 8 }}>
           {inzerat.stav}
         </Badge>
       </Card.Section>

@@ -10,6 +10,7 @@ export const inzerat = sqliteTable("inzerat", {
   stav: text().notNull().default("Dostupné"),
   kontakt: text().notNull(),
   obrazek: text(),
+  obrazekPozice: text().default("50% 50%"),
 });
 
 export type Inzerat = typeof inzerat.$inferSelect;

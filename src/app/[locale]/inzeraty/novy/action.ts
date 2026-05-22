@@ -1,8 +1,8 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { db } from "@/db";
 import { inzerat } from "@/db/schemas/inzerat.schema";
+import { redirect } from "next/navigation";
 
 export async function vytvorInzerat(data: {
   nazev: string;
@@ -13,10 +13,12 @@ export async function vytvorInzerat(data: {
   stav: string;
   kontakt: string;
   obrazek: string;
+  obrazekPozice: string;
 }) {
   await db.insert(inzerat).values({
     ...data,
     obrazek: data.obrazek || null,
+    obrazekPozice: data.obrazekPozice || "50% 50%",
   });
   redirect("/cs/inzeraty");
 }

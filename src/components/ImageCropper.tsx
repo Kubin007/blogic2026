@@ -1,12 +1,12 @@
 "use client";
 
-import { Button, Image, Modal, Stack } from "@mantine/core";
+import { Button, Modal, Stack } from "@mantine/core";
 import { useRef, useState } from "react";
 import ReactCrop, { type Crop, centerCrop, makeAspectCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
 type Props = {
-  onCropDone: (base64: string) => void;
+  onCropDone: (base64: string, pozice: string) => void;
   existingImage?: string | null;
 };
 
@@ -30,36 +30,16 @@ export function ImageCropper({ onCropDone, existingImage }: Props) {
 
   function handleImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     const { width, height } = e.currentTarget;
-    const initialCrop = centerCrop(
-      makeAspectCrop({ unit: "%", width: 90 }, 16 / 9, width, height),
-      width,
-      height,
-    );
+    const initialCrop = centerCrop(makeAspectCrop({ unit: "%", width: 90 }, 16 / 9, width, height), width, height);
     setCrop(initialCrop);
   }
 
   function handleCropDone() {
-    if (!imgRef.current || !crop) return;
-    const canvas = document.createElement("canvas");
-    const scaleX = imgRef.current.naturalWidth / imgRef.current.width;
-    const scaleY = imgRef.current.naturalHeight / imgRef.current.height;
-    canvas.width = (crop.width / 100) * imgRef.current.width * scaleX;
-    canvas.height = (crop.height / 100) * imgRef.current.height * scaleY;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.drawImage(
-      imgRef.current,
-      (crop.x / 100) * imgRef.current.width * scaleX,
-      (crop.y / 100) * imgRef.current.height * scaleY,
-      canvas.width,
-      canvas.height,
-      0,
-      0,
-      canvas.width,
-      canvas.height,
-    );
-    const base64 = canvas.toDataURL("image/jpeg", 0.8);
-    onCropDone(base64);
+    if (!src || !crop) return;
+    const poziceX = Math.round(crop.x + crop.width / 2);
+    const poziceY = Math.round(crop.y + crop.height / 2);
+    const pozice = `${poziceX}% ${poziceY}%`;
+    onCropDone(src, pozice);
     setOpened(false);
   }
 
@@ -69,18 +49,16 @@ export function ImageCropper({ onCropDone, existingImage }: Props) {
 
       {existingImage ? (
         <Stack gap="xs">
-          <Image
-            src={existingImage}
-            alt="Náhled"
-            radius="md"
-            mah={200}
-            fit="contain"
-            style={{ cursor: "pointer" }}
+          <Button
+            color="orange"
+            variant="outline"
             onClick={() => {
               setSrc(existingImage);
               setOpened(true);
             }}
-          />
+          >
+            Upravit ořez
+          </Button>
           <Button color="orange" variant="outline" onClick={() => inputRef.current?.click()}>
             Nahrát nový obrázek
           </Button>
@@ -95,6 +73,7 @@ export function ImageCropper({ onCropDone, existingImage }: Props) {
         <Stack>
           {src && (
             <ReactCrop crop={crop} onChange={(_, percentCrop) => setCrop(percentCrop)} aspect={16 / 9}>
+              {/* biome-ignore lint/performance/noImgElement: ReactCrop vyžaduje img element */}
               <img ref={imgRef} src={src} onLoad={handleImageLoad} style={{ maxWidth: "100%" }} alt="crop" />
             </ReactCrop>
           )}

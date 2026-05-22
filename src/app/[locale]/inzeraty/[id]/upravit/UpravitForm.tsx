@@ -15,8 +15,8 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
 import { ImageCropper } from "@/components/ImageCropper";
 import { smazatInzerat, upravitInzerat } from "./action";
 
@@ -31,6 +31,7 @@ type Props = {
     stav: string;
     kontakt: string;
     obrazek: string | null;
+    obrazekPozice: string | null;
   };
 };
 
@@ -48,6 +49,7 @@ export function UpravitForm({ inzerat }: Props) {
       kontakt: inzerat.kontakt,
       zdarma: inzerat.zdarma,
       obrazek: inzerat.obrazek ?? "",
+      obrazekPozice: inzerat.obrazekPozice ?? "50% 50%",
     },
     validate: {
       nazev: (value) => (value.trim().length === 0 ? "Název je povinný" : null),
@@ -60,15 +62,14 @@ export function UpravitForm({ inzerat }: Props) {
 
   return (
     <>
-      <Modal
-        opened={smazatOpened}
-        onClose={() => setSmazatOpened(false)}
-        title="Smazat inzerát"
-        centered
-      >
-        <Text>Opravdu chceš smazat inzerát <b>{inzerat.nazev}</b>? Tato akce je nevratná.</Text>
+      <Modal opened={smazatOpened} onClose={() => setSmazatOpened(false)} title="Smazat inzerát" centered>
+        <Text>
+          Opravdu chceš smazat inzerát <b>{inzerat.nazev}</b>? Tato akce je nevratná.
+        </Text>
         <Group mt="md" justify="flex-end">
-          <Button variant="subtle" onClick={() => setSmazatOpened(false)}>Zrušit</Button>
+          <Button variant="subtle" onClick={() => setSmazatOpened(false)}>
+            Zrušit
+          </Button>
           <Button color="red" onClick={async () => await smazatInzerat(inzerat.id)}>
             Smazat
           </Button>
@@ -113,9 +114,10 @@ export function UpravitForm({ inzerat }: Props) {
             </Text>
             <ImageCropper
               existingImage={obrazekUrl}
-              onCropDone={(base64) => {
+              onCropDone={(base64, pozice) => {
                 setObrazekUrl(base64);
                 form.setFieldValue("obrazek", base64);
+                form.setFieldValue("obrazekPozice", pozice);
               }}
             />
           </Stack>

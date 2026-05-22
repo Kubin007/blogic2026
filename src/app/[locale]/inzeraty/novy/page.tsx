@@ -14,9 +14,9 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useRef, useState } from "react";
-import { vytvorInzerat } from "./action";
 import { ImageCropper } from "@/components/ImageCropper";
+import { vytvorInzerat } from "./action";
+import { useState } from "react";
 
 export default function NovyInzeratPage() {
   const [obrazekUrl, setObrazekUrl] = useState<string | null>(null);
@@ -31,6 +31,7 @@ export default function NovyInzeratPage() {
       kontakt: "",
       zdarma: false,
       obrazek: "",
+      obrazekPozice: "50% 50%",
     },
     validate: {
       nazev: (value) => (value.trim().length === 0 ? "Název je povinný" : null),
@@ -69,14 +70,13 @@ export default function NovyInzeratPage() {
               Obrázek
             </Text>
             <ImageCropper
-              onCropDone={(base64) => {
+              onCropDone={(base64, pozice) => {
                 setObrazekUrl(base64);
                 form.setFieldValue("obrazek", base64);
+                form.setFieldValue("obrazekPozice", pozice);
               }}
             />
-            {obrazekUrl && (
-              <Image src={obrazekUrl} alt="Náhled" radius="md" mt="xs" mah={200} fit="contain" />
-            )}
+            {obrazekUrl && <Image src={obrazekUrl} alt="Náhled" radius="md" mt="xs" mah={200} fit="contain" />}
           </Stack>
           <Button
             color="orange"
